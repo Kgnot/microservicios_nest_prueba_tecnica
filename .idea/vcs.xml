@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/apps/auth-ms" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/apps/client-getaway" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/apps/task-history-ms" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/apps/task-ms" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/apps/user-ms" vcs="Git" />
+  </component>
+</project>
