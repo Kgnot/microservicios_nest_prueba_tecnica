@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 9.x                               */
-/* Created on:     27/08/2025 7:49:52 p. m.                     */
+/* Created on:     28/08/2025 3:09:29 p. m.                     */
 /*==============================================================*/
 
 
@@ -63,6 +63,8 @@ create table APP_USER (
    ROLE_ID              VARCHAR(20)          not null,
    NAME                 VARCHAR(50)          not null,
    AGE                  INT4                 not null,
+   USERNAME             VARCHAR(20)          not null,
+   PASSWORD             VARCHAR(68)          not null,
    constraint PK_APP_USER primary key (USER_ID)
 );
 
