@@ -1,0 +1,94 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model app_user {
+  user_id        Int              @id(map: "pk_app_user") @unique(map: "app_user_pk") @default(autoincrement())
+  app_user_id    Int?
+  role_id        String           @db.VarChar(20)
+  name           String           @db.VarChar(50)
+  age            Int
+  username       String           @unique(map: "app_user_username_unique") @db.VarChar
+  password       String           @db.VarChar(68)
+  role           role             @relation(fields: [role_id], references: [role_id], onUpdate: Restrict, map: "fk_app_user_autheriza_role")
+  app_user       app_user?        @relation("app_userToapp_user", fields: [app_user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_app_user_tree_user_app_user")
+  other_app_user app_user[]       @relation("app_userToapp_user")
+  relationship_3 relationship_3[]
+  task           task[]
+
+  @@index([role_id], map: "autherization_rol_fk")
+  @@index([app_user_id], map: "tree_users_fk")
+}
+
+model authorization_permission {
+  permission_id Int
+  role_id       String     @db.VarChar(20)
+  permission    permission @relation(fields: [permission_id], references: [permission_id], onUpdate: Restrict, map: "fk_authoriz_authoriza_permissi")
+  role          role       @relation(fields: [role_id], references: [role_id], onUpdate: Restrict, map: "fk_authoriz_authoriza_role")
+
+  @@id([permission_id, role_id], map: "pk_authorization_permission")
+  @@unique([permission_id, role_id], map: "authorization_permission_pk")
+  @@index([role_id], map: "authorization_permission2_fk")
+  @@index([permission_id], map: "authorization_permission_fk")
+}
+
+model permission {
+  permission_id            Int                        @id(map: "pk_permission") @unique(map: "permission_pk") @default(autoincrement())
+  description              String                     @db.VarChar(30)
+  authorization_permission authorization_permission[]
+}
+
+model relationship_3 {
+  user_id  Int
+  team_id  Int
+  app_user app_user @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "fk_relation_relations_app_user")
+  team     team     @relation(fields: [team_id], references: [team_id], onUpdate: Restrict, map: "fk_relation_relations_team")
+
+  @@id([user_id, team_id], map: "pk_relationship_3")
+  @@unique([user_id, team_id], map: "relationship_3_pk")
+  @@index([user_id], map: "relationship_3_fk")
+  @@index([team_id], map: "relationship_4_fk")
+}
+
+model role {
+  role_id                  String                     @id(map: "pk_role") @unique(map: "role_pk") @db.VarChar(20)
+  app_user                 app_user[]
+  authorization_permission authorization_permission[]
+}
+
+model task {
+  task_id     Int         @id(map: "pk_task") @unique(map: "task_pk") @default(autoincrement())
+  state_id    String?     @db.VarChar(20)
+  team_id     Int?
+  user_id     Int
+  title       String      @db.VarChar(70)
+  description String      @db.VarChar(30)
+  due_date    DateTime?   @db.Date
+  task_state  task_state? @relation(fields: [state_id], references: [state_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_task_state_by__task_sta")
+  team        team?       @relation(fields: [team_id], references: [team_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_task_team_resp_team")
+  app_user    app_user    @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "fk_task_user_resp_app_user")
+
+  @@index([state_id], map: "state_by_task_fk")
+  @@index([team_id], map: "team_responsabilties_fk")
+  @@index([user_id], map: "user_responsabilities_fk")
+}
+
+model task_state {
+  state_id String @id(map: "pk_task_state") @unique(map: "task_state_pk") @db.VarChar(20)
+  task     task[]
+}
+
+model team {
+  team_id        Int              @id(map: "pk_team") @unique(map: "team_pk") @default(autoincrement())
+  name           String           @db.VarChar(50)
+  description    String           @db.VarChar(30)
+  relationship_3 relationship_3[]
+  task           task[]
+}
