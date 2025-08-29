@@ -6,6 +6,5 @@
     <mapping directory="$PROJECT_DIR$/apps/client-getaway" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/apps/task-history-ms" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/apps/task-ms" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/apps/user-ms" vcs="Git" />
   </component>
 </project>
